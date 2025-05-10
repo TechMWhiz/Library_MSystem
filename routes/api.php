@@ -7,12 +7,20 @@ use App\Http\Controllers\Api\BooksController;
 use App\Http\Controllers\Api\TransactionsController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\DashboardController;
+
 
 /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
 */
+Route::get('/dashboard/stats', [DashboardController::class, 'getStats']);
+Route::prefix('dashboard')->group(function () {
+    Route::get('/stats', [DashboardController::class, 'getStats']);
+    Route::get('/recent-borrowings', [DashboardController::class, 'getRecentBorrowings']);
+    Route::get('/popular-books', [DashboardController::class, 'getPopularBooks']);
+});
 
 // Public routes
 Route::post('/register', [AuthController::class, 'register']);
@@ -58,4 +66,11 @@ Route::middleware('auth:sanctum')->group(function () {
         // Dashboard
         Route::get('/admin/dashboard', [AdminController::class, 'dashboard']);
     });
+});
+
+Route::get('/test-connection', function () {
+    return response()->json([
+        'message' => 'Backend is connected successfully!',
+        'timestamp' => now()
+    ]);
 });
