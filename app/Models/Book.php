@@ -6,24 +6,33 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Books extends Model
+class Book extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'title',
         'author',
         'isbn',
         'published_date',
         'description',
-        'is_available',
+        'available_copies',
         'price',
     ];
 
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
     protected $casts = [
         'published_date' => 'date',
-        'is_available' => 'boolean',
-        'price' => 'decimal:2'
+        'price' => 'decimal:2',
     ];
 
     /**
@@ -31,6 +40,6 @@ class Books extends Model
      */
     public function transactions(): HasMany
     {
-        return $this->hasMany(Transaction::class, 'book_id');
+        return $this->hasMany(Transaction::class);
     }
-}
+} 
